@@ -3,6 +3,11 @@ const startSelector = document.getElementById('start-selector');
 const endSelector = document.getElementById('end-selector');
 const resetButton = document.getElementById('reset');
 const DFSButton = document.getElementById("DFS");
+const BFSButton = document.getElementById("BFS");
+BFSButton.addEventListener("click", async (e) => {
+    if (!IS_START_SELECTED || !IS_END_SELECTED) { console.log("Select start and end"); return; }
+    await visualiseAlgo("BFS", START, END);
+})
 DFSButton.addEventListener("click", async (e) => {
     if (!IS_START_SELECTED || !IS_END_SELECTED) { console.log("Select start and end"); return; }
     await visualiseAlgo("DFS", START, END);
@@ -52,20 +57,21 @@ function createGrid() {
 
 function nodeSelector(e) {
 
-    if ((IS_START_SELECTED && IS_END_SELECTED) || CURRENT_SELECTOR === "") return;
     if (CURRENT_SELECTOR === 'start' && !IS_START_SELECTED) {
         IS_START_SELECTED = true;
         setnodeState(e.target, CURRENT_SELECTOR);
         START = e.target.dataset.node;
         e.target.dataset.state = CURRENT_SELECTOR;
         startSelector.classList.remove('card');
-    } else if (!IS_END_SELECTED) {
+    } else if (CURRENT_SELECTOR === 'end' && !IS_END_SELECTED) {
         IS_END_SELECTED = true;
         setnodeState(e.target, CURRENT_SELECTOR);
         END = e.target.dataset.node;
         e.target.dataset.state = CURRENT_SELECTOR;
         endSelector.classList.remove('card');
-    };
+    } else {
+        setnodeState(e.target, 'wall');
+    }
 }
 
 
@@ -92,12 +98,13 @@ function setnodeState(node, state = "empty") {
 }
 
 function isVisited(id) {
-    return getNodeById(id).dataset.state === 'visited' || getNodeById(id).dataset.state === 'start';
+    const nodeState = getNodeById(id).dataset.state;
+    return nodeState === 'visited' || nodeState === 'start' || nodeState === 'wall';
 }
 
 function visitnode(id) {
     const node = getNodeById(id);
-    if (node.dataset.state !== 'start') {
+    if (node.dataset.state !== 'start' || node.dataset.state !== 'end') {
         setnodeState(node, "visited");
     }
 }
@@ -126,7 +133,7 @@ const createAjacencyList = (input) => {
 const highlightPath = async (path) => {
     for (let i = 0; i < path.length; i++) {
         let node = getNodeById(path[i])
-        if (node.dataset.state !== "start") {
+        if (node.dataset.state !== "start" || node.dataset.state !== 'end') {
             setnodeState(node, "path");
         }
         await new Promise(resolve => setTimeout(() => { resolve() }, 2));
@@ -139,7 +146,10 @@ const visualiseAlgo = async (algorithmName, start, end) => {
         case "DFS":
             await DFS(adjList, start, end, shortestPath);
             break;
-
+        case "BFS":
+            console.log("IN BFS");
+            await BFS(adjList, start, end, shortestPath);
+            break; 
         default:
             break;
     }
@@ -159,4 +169,35 @@ const DFS = async (adjList, start, end, path) => {
     }
 
     return false;
+}
+
+const BFS = async (adjList, start, end, path) => {
+
+    visitnode(start);
+    const queue = [start];
+    const parent = {};
+    parent[start] = null;
+
+    while (queue.length > 0) {
+
+        let node = queue.pop();
+        if (node == end) {
+            let current = end;
+            while (current != null) {
+                path.unshift(current);
+                current = parent[current];
+            }
+            break;
+        }
+
+        for (let i = 0; i < adjList[node].length; i++) {
+            let neighbour = adjList[node][i];
+            if (!isVisited(neighbour)) {
+                visitnode(neighbour);
+                parent[neighbour] = node;
+                await new Promise(resolve => setTimeout(() => { resolve() }, 5));
+                queue.unshift(neighbour);
+            }
+        }
+    }
 }

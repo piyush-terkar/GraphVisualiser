@@ -50,3 +50,7 @@ h1{
   .node.end.node.visited{
     background-color: green;
   }
+
+  .node.wall{
+    background-color: black;
+  }
