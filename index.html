@@ -56,7 +56,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link disabled"
-                            aria-disabled="true">Disabled</a>
+                            id="visualise">Visualise</a>
                     </li>
                 </ul>
             </div>
@@ -65,22 +65,22 @@
     <div class="container-fluid card">
         <div class="container">
             <div class="m-3 d-flex">
-                <div class="mx-2 cell visited"></div>
-                Visited Cell
+                <div class="mx-2 node visited"></div>
+                Visited Node
             </div>
             <div class="m-3 d-flex">
-                <div class="mx-2 cell path"></div>
-                Cell On Path
+                <div class="mx-2 node path"></div>
+                Shortest Path Node
             </div>
             <div class="m-3 d-flex"
                 id="start-selector">
-                <div class="mx-2 cell start"></div>
-                Starting Point
+                <div class="mx-2 node start"></div>
+                Start Node
             </div>
             <div class="m-3 d-flex"
                 id="end-selector">
-                <div class="mx-2 cell end"></div>
-                Destination
+                <div class="mx-2 node end"></div>
+                Target Node
             </div>
         </div>
     </div>
@@ -90,8 +90,6 @@
 
         </div>
     </main>
-
-
 
     <script src="./main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"

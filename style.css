@@ -8,22 +8,22 @@ h1{
     gap: 2px; /* For spacing */
   }
   
-  .cell {
+  .node {
     width: 25px;
     height: 25px;
     border: 1px solid #ccc;
     background-color: white;
   }
 
-  .cell.visited{
+  .node.visited{
     background-color: purple;
   }
 
-  .cell.path{
+  .node.path{
     background-color: yellow;
   }
 
-  .cell.start{
+  .node.start{
     width: 25px;
     height: 25px;
     background-image: url("./icons/start.png");
@@ -33,7 +33,7 @@ h1{
     border: 1px solid blue;
   }
 
-  .cell.end{
+  .node.end{
     width: 25px;
     height: 25px;
     background-image: url("./icons/end.png");
