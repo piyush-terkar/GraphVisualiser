@@ -42,3 +42,11 @@ h1{
     background-position: center; 
     border: 1px solid purple;
   }
+
+  .node.start.visited{
+    background-color: red;
+  }
+
+  .node.end.node.visited{
+    background-color: green;
+  }

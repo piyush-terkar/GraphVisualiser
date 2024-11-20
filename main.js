@@ -2,11 +2,17 @@ const grid = document.getElementById('grid');
 const startSelector = document.getElementById('start-selector');
 const endSelector = document.getElementById('end-selector');
 const resetButton = document.getElementById('reset');
+const DFSButton = document.getElementById("DFS");
+DFSButton.addEventListener("click", async (e) => {
+    if (!IS_START_SELECTED || !IS_END_SELECTED) { console.log("Select start and end"); return; }
+    await visualiseAlgo("DFS", START, END);
+})
 
 const NODE_SIZE = 25;
 let TOTAL_NODES;
 let IS_START_SELECTED = false, IS_END_SELECTED = false, CURRENT_SELECTOR = "";
 let INPUT_GRAPH = [];
+let START, END;
 
 resetButton.addEventListener('click', createGrid);
 startSelector.addEventListener("click", (e) => startOrEndSelector(e, "start"))
@@ -50,10 +56,14 @@ function nodeSelector(e) {
     if (CURRENT_SELECTOR === 'start' && !IS_START_SELECTED) {
         IS_START_SELECTED = true;
         setnodeState(e.target, CURRENT_SELECTOR);
+        START = e.target.dataset.node;
+        e.target.dataset.state = CURRENT_SELECTOR;
         startSelector.classList.remove('card');
     } else if (!IS_END_SELECTED) {
         IS_END_SELECTED = true;
         setnodeState(e.target, CURRENT_SELECTOR);
+        END = e.target.dataset.node;
+        e.target.dataset.state = CURRENT_SELECTOR;
         endSelector.classList.remove('card');
     };
 }
@@ -82,11 +92,14 @@ function setnodeState(node, state = "empty") {
 }
 
 function isVisited(id) {
-    return getNodeById(id).dataset.state === 'visited';
+    return getNodeById(id).dataset.state === 'visited' || getNodeById(id).dataset.state === 'start';
 }
 
 function visitnode(id) {
-    setnodeState(getNodeById(id), "visited");
+    const node = getNodeById(id);
+    if (node.dataset.state !== 'start') {
+        setnodeState(node, "visited");
+    }
 }
 
 function isEnd(id) {
@@ -107,6 +120,43 @@ const createAjacencyList = (input) => {
         adjList[v].push(u);
     }
     console.log(adjList);
+    return adjList;
 }
 
-createAjacencyList(INPUT_GRAPH);
+const highlightPath = async (path) => {
+    for (let i = 0; i < path.length; i++) {
+        let node = getNodeById(path[i])
+        if (node.dataset.state !== "start") {
+            setnodeState(node, "path");
+        }
+        await new Promise(resolve => setTimeout(() => { resolve() }, 2));
+    }
+}
+const visualiseAlgo = async (algorithmName, start, end) => {
+    let adjList = createAjacencyList(INPUT_GRAPH);
+    let shortestPath = [];
+    switch (algorithmName) {
+        case "DFS":
+            await DFS(adjList, start, end, shortestPath);
+            break;
+
+        default:
+            break;
+    }
+    await highlightPath(shortestPath);
+}
+
+const DFS = async (adjList, start, end, path) => {
+    if (start == end) return true;
+    visitnode(start);
+    path.push(start);
+    await new Promise(resolve => setTimeout(() => { resolve() }, 5));
+
+    for (let i = 0; i < adjList[start].length; i++) {
+        if (!isVisited(adjList[start][i])) {
+            if (await DFS(adjList, adjList[start][i], end, path)) return true;
+        }
+    }
+
+    return false;
+}
