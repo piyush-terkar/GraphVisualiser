@@ -10,7 +10,7 @@ Explore the exciting world of graph algorithms with this interactive visualizer!
 
 [Try the Visualizer Here](https://piyush-terkar.github.io/GraphVisualiser/)  
 
-![Demo GIF](./images/screenshot.png)  
+![Sample screenShot](./icons/screenshot.png)  
 
 ---
 
