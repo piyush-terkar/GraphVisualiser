@@ -15,6 +15,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css"
+            rel="stylesheet">
+
     <link rel="stylesheet"
         href="style.css">
     <title>Path Finding Visualiser</title>
@@ -22,7 +25,8 @@
 
 <body>
 
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary"
+        data-aos="fade-up">
         <div class="container-fluid">
             <a class="navbar-brand"
                 href="#">
@@ -44,48 +48,53 @@
             <div class="collapse navbar-collapse"
                 id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item">
+                    <li class="nav-item m-3">
                         <a class="nav-link"
                             href="#" id="DFS">DFS</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item m-3">
                         <a class="nav-link"
                             href="#" id="BFS">BFS</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item m-3">
                         <a class="nav-link"
                             href="#"
                             id="reset">Reset Grid</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link disabled"
-                            id="visualise">Visualise</a>
+                            id="visualise">
+                            &copy; PathFinder
+                            <br>
+                            Designed and Developed by: Piyush Terkar 2024</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
-    <div class="container-fluid card">
-        <div class="container">
-            <div class="m-3 d-flex">
+    <div class="container-fluid card d-flex align-items-center"
+        data-aos="fade-down">
+        <h3 class="h3 mt-3">Click Start Node and End Node to place a start and target Node on the grid</h3>
+        <div class="container d-flex justify-content-center">
+            <div class="m-3 d-flex btn">
                 <div class="mx-2 node visited"></div>
                 Visited Node
             </div>
-            <div class="m-3 d-flex">
+            <div class="m-3 d-flex btn">
                 <div class="mx-2 node path"></div>
                 Shortest Path Node
             </div>
-            <div class="m-3 d-flex"
+            <div class="m-3 d-flex btn btn-light"
                 id="start-selector">
                 <div class="mx-2 node start"></div>
                 Start Node
             </div>
-            <div class="m-3 d-flex"
+            <div class="m-3 d-flex btn btn-light"
                 id="end-selector">
                 <div class="mx-2 node end"></div>
                 Target Node
             </div>
-            <div class="m-3 d-flex"
+            <div class="m-3 d-flex btn"
                 id="end-selector">
                 <div class="mx-2 node wall"></div>
                 Wall Node
@@ -98,6 +107,28 @@
 
         </div>
     </main>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast"
+            class="toast"
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true">
+            <div class="toast-header">
+                <img src="./icons/favicon.png"
+                    class="rounded me-2"
+                    alt="...">
+                <strong class="me-auto">PathFinder</strong>
+                <small>Just Now</small>
+                <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                <h5 id="message"></h5>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
     integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
@@ -105,6 +136,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
     integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
     crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
     <script src="./main.js"></script>
 </body>
 

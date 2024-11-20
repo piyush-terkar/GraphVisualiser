@@ -4,12 +4,24 @@ const endSelector = document.getElementById('end-selector');
 const resetButton = document.getElementById('reset');
 const DFSButton = document.getElementById("DFS");
 const BFSButton = document.getElementById("BFS");
+const errorToast = document.getElementById('liveToast');
+const toastBootstrap = bootstrap.Toast.getOrCreateInstance(errorToast)
+const messageHolder = document.getElementById("message");
+
+function showToast(message) {
+    console.log(message);
+    messageHolder.innerText = message;
+    toastBootstrap.show();
+}
+
 BFSButton.addEventListener("click", async (e) => {
-    if (!IS_START_SELECTED || !IS_END_SELECTED) { console.log("Select start and end"); return; }
+    if (!IS_START_SELECTED || !IS_END_SELECTED) { showToast("Select a Start Node and Target Node to proceed"); return; }
+    showToast("BFS is an unweighted Algorithm that guarantees shortest Path!")
     await visualiseAlgo("BFS", START, END);
 })
 DFSButton.addEventListener("click", async (e) => {
-    if (!IS_START_SELECTED || !IS_END_SELECTED) { console.log("Select start and end"); return; }
+    if (!IS_START_SELECTED || !IS_END_SELECTED) { showToast("Select a Start Node and Target Node to proceed"); return; }
+    showToast("DFS is an unweighted Algorithm that does NOT guarantees shortest Path!")
     await visualiseAlgo("DFS", START, END);
 })
 
@@ -22,6 +34,7 @@ let START, END;
 resetButton.addEventListener('click', createGrid);
 startSelector.addEventListener("click", (e) => startOrEndSelector(e, "start"))
 endSelector.addEventListener("click", (e) => startOrEndSelector(e, "end"))
+
 
 function createGrid() {
     IS_START_SELECTED = false, IS_END_SELECTED = false, CURRENT_SELECTOR = "";
@@ -44,6 +57,7 @@ function createGrid() {
             let currNode = row * cols + col;
             node.dataset.node = currNode;
             node.dataset.state = 'empty';
+            node["data-aos"] = "flip-left";
             node.addEventListener('click', (e) => {
                 nodeSelector(e);
             });
@@ -62,13 +76,11 @@ function nodeSelector(e) {
         setnodeState(e.target, CURRENT_SELECTOR);
         START = e.target.dataset.node;
         e.target.dataset.state = CURRENT_SELECTOR;
-        startSelector.classList.remove('card');
     } else if (CURRENT_SELECTOR === 'end' && !IS_END_SELECTED) {
         IS_END_SELECTED = true;
         setnodeState(e.target, CURRENT_SELECTOR);
         END = e.target.dataset.node;
         e.target.dataset.state = CURRENT_SELECTOR;
-        endSelector.classList.remove('card');
     } else {
         setnodeState(e.target, 'wall');
     }
@@ -77,7 +89,7 @@ function nodeSelector(e) {
 
 function startOrEndSelector(e, selector) {
     if (IS_END_SELECTED) return;
-    e.target.classList.add("card");
+    showToast(`Click anywhere on the screen to place the ${selector} node`)
     CURRENT_SELECTOR = selector;
 }
 
@@ -144,16 +156,23 @@ const visualiseAlgo = async (algorithmName, start, end) => {
     let shortestPath = [];
     switch (algorithmName) {
         case "DFS":
-            await DFS(adjList, start, end, shortestPath);
+            if (!await DFS(adjList, start, end, shortestPath)) {
+                showToast("No Path Found!!, is node surrounded by walls?");
+                break;
+            };
+            await highlightPath(shortestPath);
             break;
         case "BFS":
             console.log("IN BFS");
-            await BFS(adjList, start, end, shortestPath);
+            if (!await BFS(adjList, start, end, shortestPath)) {
+                showToast("No Path Found!!, is node surrounded by walls?");
+                break;
+            }
+            await highlightPath(shortestPath);
             break; 
         default:
             break;
     }
-    await highlightPath(shortestPath);
 }
 
 const DFS = async (adjList, start, end, path) => {
@@ -187,7 +206,7 @@ const BFS = async (adjList, start, end, path) => {
                 path.unshift(current);
                 current = parent[current];
             }
-            break;
+            return true;
         }
 
         for (let i = 0; i < adjList[node].length; i++) {
@@ -200,4 +219,5 @@ const BFS = async (adjList, start, end, path) => {
             }
         }
     }
+    return false;
 }

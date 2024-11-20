@@ -13,10 +13,12 @@ h1{
     height: 25px;
     border: 1px solid #ccc;
     background-color: white;
+    border-radius: 5px;
   }
 
   .node.visited{
-    background-color: purple;
+    animation: pulseAnimation 250ms;
+    background-color: rgb(5, 219, 252);
   }
 
   .node.path{
@@ -30,7 +32,7 @@ h1{
     background-size: 25px 25px; 
     background-repeat: no-repeat;
     background-position: center; 
-    border: 1px solid blue;
+    border: 0px;
   }
 
   .node.end{
@@ -40,7 +42,7 @@ h1{
     background-size: 25px 25px; 
     background-repeat: no-repeat;
     background-position: center; 
-    border: 1px solid purple;
+    border: 0px;
   }
 
   .node.start.visited{
@@ -52,5 +54,45 @@ h1{
   }
 
   .node.wall{
-    background-color: black;
+    background-color: rgb(1, 17, 1);
+    animation: wallAnimation 250ms;
   }
+
+  @keyframes wallAnimation {
+    0% {
+        transform: scale(0.3);
+        background-color: rgba(4, 111, 173, 0.75);
+        border-radius: 100%;
+    }
+    50% {
+        background-color: rgba(6, 98, 177, 0.75);
+    }
+    75% {
+        transform: scale(1.2);
+        background-color: rgba(5, 167, 199, 0.75);
+    }
+    100% {
+        transform: scale(1);
+        background-color: rgba(6, 203, 203, 0.75);
+
+    }
+}
+
+@keyframes pulseAnimation {
+    0% {
+        transform: scale(0.3);
+        background-color: rgba(0, 0, 66, 0.75);
+        border-radius: 100%;
+    }
+    50% {
+        background-color: rgba(17, 104, 217, 0.75);
+    }
+    75% {
+        transform: scale(1.2);
+        background-color: rgb(5, 108, 81);
+    }
+    100% {
+        transform: scale(1);
+        background-color: rgba(15, 218, 0, 0.75);
+    }
+}
