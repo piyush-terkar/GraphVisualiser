@@ -1,0 +1,44 @@
+h1{
+    color: red;
+}
+.grid {
+    display: grid;
+    grid-template-columns: repeat(20, 25px); /* 20 columns of 25px */
+    grid-template-rows: repeat(20, 25px);   /* 20 rows of 25px */
+    gap: 2px; /* For spacing */
+  }
+  
+  .cell {
+    width: 25px;
+    height: 25px;
+    border: 1px solid #ccc;
+    background-color: white;
+  }
+
+  .cell.visited{
+    background-color: purple;
+  }
+
+  .cell.path{
+    background-color: yellow;
+  }
+
+  .cell.start{
+    width: 25px;
+    height: 25px;
+    background-image: url("./icons/start.png");
+    background-size: 25px 25px; 
+    background-repeat: no-repeat;
+    background-position: center; 
+    border: 1px solid blue;
+  }
+
+  .cell.end{
+    width: 25px;
+    height: 25px;
+    background-image: url("./icons/end.png");
+    background-size: 25px 25px; 
+    background-repeat: no-repeat;
+    background-position: center; 
+    border: 1px solid purple;
+  }
